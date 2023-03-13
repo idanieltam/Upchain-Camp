@@ -1,5 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
+require('hardhat-abi-exporter');
 require("dotenv").config();
 
 module.exports = {
@@ -12,7 +13,15 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      goerli: 'S5JA2E4XI55J8KBYY35FJ1MCIH36KJXVKB'
+      goerli: process.env.ETHSCAN_API
     }
+  },
+  abiExporter: {
+    path:'./deployments/abi',
+    clear: true,
+    flat: true,
+    only: [],
+    spacing: 2,
+    pretty: true
   }
 };
