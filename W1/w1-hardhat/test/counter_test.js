@@ -12,13 +12,19 @@ describe('Counter', function () {
     const [owner,notOwner] = await ethers.getSigners();
     console.log('Signer 1 address: ', owner.address);
     console.log('Signer 2 address: ', notOwner.address);
+    let withdrawAmount = ethers.utils.parseUnits("1", "ether");
 
-    return { counter, owner,notOwner, provider };
+    return { counter, owner,notOwner, provider, withdrawAmount };
   }
 
   it('should deploy and set the owner correctly', async function () {
     const { counter, owner } = await loadFixture(deployContractAndSetVariables);
     expect(await counter.owner()).to.equal(owner.address);
+  });
+
+  it('should not withdraw more than 0.1eth', async function () {
+    const { counter, withdrawAmount } = await loadFixture(deployContractAndSetVariables);
+    await expect(counter.withdraw(withdrawAmount)).to.be.reverted;
   });
 
   it('counter Function should not be called by anyone other than owner', async function () {
